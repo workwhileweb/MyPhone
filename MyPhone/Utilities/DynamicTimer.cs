@@ -12,7 +12,7 @@ namespace GoodTimeStudio.MyPhone.Utilities
 
         public delegate void DynamicTimerElapsedEventHandler(object? sender, DynamicTimerElapsedEventArgs e);
         public event DynamicTimerElapsedEventHandler? Elapsed;
-        public bool Enabled { get => _timer.Enabled; }
+        public bool Enabled => _timer.Enabled;
 
         /// <summary>
         /// Initialize a new instance of <see cref="DynamicTimer"/>
@@ -32,7 +32,7 @@ namespace GoodTimeStudio.MyPhone.Utilities
         {
             if (_schedules.MoveNext())
             {
-                DynamicTimerSchedule schedule = _schedules.Current;
+                var schedule = _schedules.Current;
                 _timer.Interval = schedule.Interval.TotalMilliseconds;
                 _currentTryCount = schedule.TryCount;
                 _timer.Elapsed += _timer_Elapsed;
@@ -49,7 +49,7 @@ namespace GoodTimeStudio.MyPhone.Utilities
                 {
                     if (_schedules.MoveNext())
                     {
-                        DynamicTimerSchedule schedule = _schedules.Current;
+                        var schedule = _schedules.Current;
                         _timer.Interval = schedule.Interval.TotalMilliseconds;
                         _currentTryCount = schedule.TryCount;
                         nextTrigger = DateTime.Now + TimeSpan.FromMilliseconds(_timer.Interval);

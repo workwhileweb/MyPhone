@@ -14,7 +14,7 @@ namespace GoodTimeStudio.MyPhone.Services
 
         public async Task<bool> ShowPairDialogAsync(string deviceName, string pairPIN, TimeSpan? timeout = null)
         {
-            TaskCompletionSource<ContentDialogResult> tcs = new TaskCompletionSource<ContentDialogResult>();
+            var tcs = new TaskCompletionSource<ContentDialogResult>();
             MainWindow.WindowDispatcher.TryEnqueue(async () =>
             {
                 dialog = new DevicePairDialog(deviceName, pairPIN);

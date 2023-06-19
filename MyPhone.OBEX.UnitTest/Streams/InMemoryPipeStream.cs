@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.Concurrent;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Storage.Streams;
 
@@ -12,10 +7,10 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Streams
 {
     public class InMemoryPipeStream : IInputStream, IOutputStream
     {
-        private ManualResetEvent _dataReady = new ManualResetEvent(false);
-        private ConcurrentQueue<BufferCrate> _buffers = new ConcurrentQueue<BufferCrate>();
+        private ManualResetEvent _dataReady = new(false);
+        private ConcurrentQueue<BufferCrate> _buffers = new();
 
-        public bool DataAvailable { get { return !_buffers.IsEmpty; } }
+        public bool DataAvailable => !_buffers.IsEmpty;
 
         /// <summary>
         /// Asynchronous read timeout in milliseconds 
@@ -54,7 +49,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Streams
         private class BufferCrate
         {
             public IBuffer Buffer { get; }
-            public uint RemainingLength { get => Buffer.Length - _offset; }
+            public uint RemainingLength => Buffer.Length - _offset;
             private uint _offset = 0;
 
             public BufferCrate(IBuffer buffer)
@@ -64,7 +59,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Streams
 
             public bool CopyTo(IBuffer dstBuffer, uint count)
             {
-                uint bytesToCopy = Math.Min(RemainingLength, count);
+                var bytesToCopy = Math.Min(RemainingLength, count);
                 Buffer.CopyTo(_offset, dstBuffer, 0, bytesToCopy);
                 dstBuffer.Length = bytesToCopy;
                 _offset += bytesToCopy;

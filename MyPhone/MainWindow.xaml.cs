@@ -25,9 +25,9 @@ namespace GoodTimeStudio.MyPhone
     /// </summary>
     public sealed partial class MainWindow : Window, IDisposable
     {
-        public static XamlRoot XamlRoot { get => _instance.windowRoot.XamlRoot; }
-        public static DispatcherQueue WindowDispatcher { get => _instance.DispatcherQueue; }
-        public static string AppTitleDisplayName { get => ResourceLoader.GetForViewIndependentUse("Resources").GetString("AppDisplayName"); }
+        public static XamlRoot XamlRoot => _instance.windowRoot.XamlRoot;
+        public static DispatcherQueue WindowDispatcher => _instance.DispatcherQueue;
+        public static string AppTitleDisplayName => ResourceLoader.GetForViewIndependentUse("Resources").GetString("AppDisplayName");
 
         private readonly ISettingsService _settingsService;
 
@@ -58,13 +58,13 @@ namespace GoodTimeStudio.MyPhone
 
             // AppWindow Interop
             hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
-            WindowId windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
-            AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
+            var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
+            var appWindow = AppWindow.GetFromWindowId(windowId);
             appWindow.Closing += AppWindow_Closing;
 
             // Resize the window 
-            uint dpi = PInvoke.GetDpiForWindow((Windows.Win32.Foundation.HWND)hWnd);
-            double factor = dpi / 96d;
+            var dpi = PInvoke.GetDpiForWindow((Windows.Win32.Foundation.HWND)hWnd);
+            var factor = dpi / 96d;
             appWindow.Resize(new Windows.Graphics.SizeInt32(Convert.ToInt32(1200 * factor), Convert.ToInt32(800 * factor)));
 
             // Set system backdrop (Mica / Acrylic)
@@ -143,8 +143,8 @@ namespace GoodTimeStudio.MyPhone
         private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
         {
             #region Handle ExtendsContentIntoTitleBar
-            SolidColorBrush defaultForegroundBrush = (SolidColorBrush)Application.Current.Resources["WindowCaptionForeground"];
-            SolidColorBrush inactiveForegroundBrush = (SolidColorBrush)Application.Current.Resources["WindowCaptionForegroundDisabled"];
+            var defaultForegroundBrush = (SolidColorBrush)Application.Current.Resources["WindowCaptionForeground"];
+            var inactiveForegroundBrush = (SolidColorBrush)Application.Current.Resources["WindowCaptionForegroundDisabled"];
 
             if (args.WindowActivationState == WindowActivationState.Deactivated)
             {

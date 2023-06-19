@@ -1,9 +1,6 @@
-﻿using System;
-using System.Buffers.Binary;
+﻿using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using Windows.Storage.Streams;
 
 namespace GoodTimeStudio.MyPhone.OBEX.Headers
 {
@@ -20,10 +17,10 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
 
         public ObexHeader Build()
         {
-            using (MemoryStream memoryStream = new MemoryStream())
-            using (BinaryWriter writer = new BinaryWriter(memoryStream))
+            using (var memoryStream = new MemoryStream())
+            using (var writer = new BinaryWriter(memoryStream))
             {
-                foreach (AppParameter appParam in AppParameters)
+                foreach (var appParam in AppParameters)
                 {
                     writer.Write(appParam.TagId);
                     writer.Write(BinaryPrimitives.ReverseEndianness(appParam.ContentLength));

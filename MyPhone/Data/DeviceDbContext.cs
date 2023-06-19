@@ -1,14 +1,7 @@
-﻿using GoodTimeStudio.MyPhone.OBEX;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Microsoft.Extensions.DependencyInjection;
 using MixERP.Net.VCards;
 using MixERP.Net.VCards.Serializer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodTimeStudio.MyPhone.Data
 {

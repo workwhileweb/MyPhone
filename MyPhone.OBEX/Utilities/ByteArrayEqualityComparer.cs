@@ -5,8 +5,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Utilities
 {
     public class ByteArrayEqualityComparer : IEqualityComparer<byte[]>
     {
-        private static readonly ByteArrayEqualityComparer s_comparer = new ByteArrayEqualityComparer();
-        public static ByteArrayEqualityComparer Default { get => s_comparer; }
+        public static ByteArrayEqualityComparer Default { get; } = new();
 
         public bool Equals(byte[]? x, byte[]? y)
         {
@@ -26,7 +25,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Utilities
             unchecked
             {
                 var result = 0;
-                foreach (byte b in obj)
+                foreach (var b in obj)
                     result = (result * 31) ^ b;
                 return result;
             }

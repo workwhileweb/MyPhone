@@ -2,7 +2,6 @@
 using GoodTimeStudio.MyPhone.OBEX.Streams;
 using GoodTimeStudio.MyPhone.OBEX.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using Windows.Storage.Streams;
 
@@ -12,13 +11,13 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
     {
         public HeaderId HeaderId { get; set; }
 
-        public ushort BufferLength { get => (ushort)Buffer.Length; }
+        public ushort BufferLength => (ushort)Buffer.Length;
 
-        public ushort HeaderTotalLength { get => (ushort)(BufferLength + sizeof(HeaderId) + sizeof(ushort)); }
+        public ushort HeaderTotalLength => (ushort)(BufferLength + sizeof(HeaderId) + sizeof(ushort));
 
         public byte[] Buffer { get; }
 
-        public ObexHeaderEncoding Encoding { get => GetEncodingFromHeaderId(HeaderId); }
+        public ObexHeaderEncoding Encoding => GetEncodingFromHeaderId(HeaderId);
 
         public ObexHeader(HeaderId headerId, byte[] buffer)
         {
@@ -30,7 +29,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
             Buffer = buffer;
         }
 
-        public ObexHeader(HeaderId headerId, byte b) : this(headerId, new byte[] { b })
+        public ObexHeader(HeaderId headerId, byte b) : this(headerId, new[] { b })
         {
         }
 
@@ -45,7 +44,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
 
         public R GetValue<I, R>() where I : IBufferContentInterpreter<R>, new()
         {
-            I interpreter = new I();
+            var interpreter = new I();
             return GetValue(interpreter);
         }
 
@@ -84,8 +83,8 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
 
         public static ObexHeader ReadFromStream(IDataReader reader)
         {
-            HeaderId headerId = (HeaderId)reader.ReadByte();
-            ObexHeaderEncoding encoding = GetEncodingFromHeaderId(headerId);
+            var headerId = (HeaderId)reader.ReadByte();
+            var encoding = GetEncodingFromHeaderId(headerId);
             ushort len;
             switch (encoding)
             {
@@ -108,7 +107,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
                 default:
                     throw new InvalidOperationException("Unreachable code reached!");
             }
-            byte[] buffer = new byte[len];
+            var buffer = new byte[len];
             reader.ReadBytes(buffer);
             return new ObexHeader(headerId, buffer);
         }
@@ -127,7 +126,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
 
         public override int GetHashCode()
         {
-            int hashCode = -310111661;
+            var hashCode = -310111661;
             hashCode = hashCode * -1521134295 + HeaderId.GetHashCode();
             hashCode = hashCode * -1521134295 + ByteArrayEqualityComparer.Default.GetHashCode(Buffer);
             return hashCode;

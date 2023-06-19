@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Windows.Storage.Streams;
 
 namespace GoodTimeStudio.MyPhone.OBEX.Streams

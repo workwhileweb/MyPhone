@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GoodTimeStudio.MyPhone.OBEX.Headers
 {
@@ -14,15 +12,10 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
                 {
                     return value;
                 }
-                else
-                {
-                    throw new ObexAppParameterNotFoundException(key);
-                }
+
+                throw new ObexAppParameterNotFoundException(key);
             }
-            set
-            {
-                base[key] = value;
-            }
+            set => base[key] = value;
         }
     }
 }

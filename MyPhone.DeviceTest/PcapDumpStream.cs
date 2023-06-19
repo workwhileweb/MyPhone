@@ -31,7 +31,7 @@ namespace GoodTimeStudio.MyPhone.DeviceTest
         {
             return AsyncInfo.Run<IBuffer, uint>((cts, progress) => Task.Run(async () =>
             {
-                IBuffer buf = await _inputStream.ReadAsync(buffer, count, options);
+                var buf = await _inputStream.ReadAsync(buffer, count, options);
                 progress.Report(buf.Length);
                 _capture.Write(buf.ToArray());
                 return buf;

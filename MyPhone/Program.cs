@@ -1,12 +1,6 @@
-﻿using GoodTimeStudio.MyPhone.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.UI.Dispatching;
+﻿using Microsoft.UI.Dispatching;
 using Microsoft.Windows.AppLifecycle;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -21,7 +15,7 @@ namespace GoodTimeStudio.MyPhone
 
             // As of Windows App SDK 1.1.4, async main will causes Clipboard API not working
             // https://docs.microsoft.com/en-us/answers/questions/780749/winui-3-clipboard-api-not-working.html
-            bool isRedirect = DecideRedirect().Result;
+            var isRedirect = DecideRedirect().Result;
 
             if (!isRedirect)
             {
@@ -42,10 +36,10 @@ namespace GoodTimeStudio.MyPhone
         // Single-instance redirect, redirect Activated to the main instance 
         private static async Task<bool> DecideRedirect()
         {
-            bool isRedirect = false;
-            AppInstance mainInstance = AppInstance.FindOrRegisterForKey("main");
-            AppInstance currentInstance = AppInstance.GetCurrent();
-            AppActivationArguments activationArgs = currentInstance.GetActivatedEventArgs();
+            var isRedirect = false;
+            var mainInstance = AppInstance.FindOrRegisterForKey("main");
+            var currentInstance = AppInstance.GetCurrent();
+            var activationArgs = currentInstance.GetActivatedEventArgs();
             if (mainInstance.IsCurrent)
             {
 

@@ -1,9 +1,6 @@
 ﻿using GoodTimeStudio.MyPhone.Data;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodTimeStudio.MyPhone.Device.Services
 {
@@ -18,7 +15,7 @@ namespace GoodTimeStudio.MyPhone.Device.Services
 
         private DeviceConfiguration EnsureFirstEntryExists()
         {
-            DeviceConfiguration? configuration = _context.Configurations.FirstOrDefault();
+            var configuration = _context.Configurations.FirstOrDefault();
             if (configuration == null)
             {
                 configuration = new DeviceConfiguration();
@@ -33,7 +30,7 @@ namespace GoodTimeStudio.MyPhone.Device.Services
             get => _context.Configurations.FirstOrDefault()?.DeviceId;
             set
             {
-                DeviceConfiguration configuration = EnsureFirstEntryExists();
+                var configuration = EnsureFirstEntryExists();
                 if (configuration.DeviceId != value)
                 {
                     configuration.DeviceId = value;
@@ -47,7 +44,7 @@ namespace GoodTimeStudio.MyPhone.Device.Services
             get => _context.Configurations.FirstOrDefault()?.SmsServiceLastSyncedTime;
             set
             {
-                DeviceConfiguration configuration = EnsureFirstEntryExists();
+                var configuration = EnsureFirstEntryExists();
                 if (configuration.SmsServiceLastSyncedTime != value)
                 {
                     configuration.SmsServiceLastSyncedTime = value;
@@ -61,7 +58,7 @@ namespace GoodTimeStudio.MyPhone.Device.Services
             get => _context.Configurations.FirstOrDefault()?.PhonebookServiceLastSyncedTime;
             set
             {
-                DeviceConfiguration configuration = EnsureFirstEntryExists();
+                var configuration = EnsureFirstEntryExists();
                 if (configuration.PhonebookServiceLastSyncedTime != value)
                 {
                     configuration.PhonebookServiceLastSyncedTime = value;
@@ -75,7 +72,7 @@ namespace GoodTimeStudio.MyPhone.Device.Services
             get => _context.Configurations.FirstOrDefault()?.SyncTimeSpan;
             set
             {
-                DeviceConfiguration configuration = EnsureFirstEntryExists();
+                var configuration = EnsureFirstEntryExists();
                 if (configuration.SyncTimeSpan != value)
                 {
                     configuration.SyncTimeSpan = value;

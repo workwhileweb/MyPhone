@@ -42,8 +42,8 @@ namespace GoodTimeStudio.MyPhone.Models
 
         private async void UpdateThumbnailBitmapImage()
         {
-            DeviceThumbnail deviceThumbnail = await DeviceInformation.GetThumbnailAsync();
-            BitmapImage glyphBitmapImage = new BitmapImage();
+            var deviceThumbnail = await DeviceInformation.GetThumbnailAsync();
+            var glyphBitmapImage = new BitmapImage();
             await glyphBitmapImage.SetSourceAsync(deviceThumbnail);
             ThumbnailBitmapImage = glyphBitmapImage;
             OnPropertyChanged(nameof(ThumbnailBitmapImage));

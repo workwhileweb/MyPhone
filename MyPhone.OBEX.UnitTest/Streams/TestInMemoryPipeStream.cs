@@ -1,12 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Windows.Storage.Streams;
+﻿using Windows.Storage.Streams;
 
 namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Streams
 {
@@ -33,7 +25,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Streams
         [Fact]
         public async Task TestBlockingRead()
         {
-            Task<uint> loadTask = _reader.LoadAsync(64).AsTask();
+            var loadTask = _reader.LoadAsync(64).AsTask();
             await Task.Delay(10);
             Assert.False(loadTask.IsCompleted);
 
@@ -45,14 +37,14 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Streams
         [Fact]
         public async Task TestDataIntegrity()
         {
-            uint bytes1 = _writer.WriteString("Hello world! ");
+            var bytes1 = _writer.WriteString("Hello world! ");
             await _writer.StoreAsync();
 
-            uint bytes2 = _writer.WriteString("Foobar! ");
+            var bytes2 = _writer.WriteString("Foobar! ");
             bytes2 += _writer.WriteString("TestDataIntegrity!\n");
             await _writer.StoreAsync();
 
-            uint loaded = await _reader.LoadAsync(bytes1);
+            var loaded = await _reader.LoadAsync(bytes1);
             Assert.Equal(bytes1, loaded);
             Assert.Equal("Hello world! ", _reader.ReadString(loaded));
 
@@ -65,7 +57,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Streams
         public async Task TestTimeout()
         {
             _stream.Timeout = 1000;
-            uint loaded = await _reader.LoadAsync(8);
+            var loaded = await _reader.LoadAsync(8);
             Assert.Equal((uint)0, loaded);
         }
     }

@@ -1,10 +1,6 @@
 ﻿using GoodTimeStudio.MyPhone.OBEX.Headers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
-using System.Threading.Tasks;
 using Windows.Storage.Streams;
 
 namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Headers
@@ -18,7 +14,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Headers
         [InlineData(HeaderId.SingleResponseMode, ObexHeaderEncoding.OneByteQuantity)]
         public void TestHeaderEncoding(HeaderId headerId, ObexHeaderEncoding expectedEncoding)
         {
-            ObexHeader header = new ObexHeader(headerId, 1);
+            var header = new ObexHeader(headerId, 1);
             Assert.Equal(expectedEncoding, header.Encoding);
         }
 
@@ -26,7 +22,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Headers
         public void TestBuiltinHeaderInterpreter_UnicodeString()
         {
             const string originalString = "Foobar";
-            ObexHeader header = new ObexHeader(HeaderId.Name, originalString, true, Encoding.BigEndianUnicode);
+            var header = new ObexHeader(HeaderId.Name, originalString, true, Encoding.BigEndianUnicode);
             Assert.Equal(originalString, header.GetValueAsUnicodeString(true));
         }
 
@@ -34,15 +30,15 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest.Headers
         public void TestBuiltinHeaderInterpreter_Utf8String()
         {
             const string originalString = "Foobar";
-            ObexHeader header = new ObexHeader(HeaderId.Name, originalString, false, Encoding.UTF8);
+            var header = new ObexHeader(HeaderId.Name, originalString, false, Encoding.UTF8);
             Assert.Equal(originalString, header.GetValueAsUtf8String(false));
         }
 
         [Fact]
         public void TestEquals()
         {
-            ObexHeader headerA = new ObexHeader(HeaderId.Body, 32);
-            ObexHeader headerB = new ObexHeader(HeaderId.Body, 32);
+            var headerA = new ObexHeader(HeaderId.Body, 32);
+            var headerB = new ObexHeader(HeaderId.Body, 32);
             Assert.Equal(headerA, headerB);
 
             DataWriter writer = new();

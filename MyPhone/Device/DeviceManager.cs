@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Calls;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
 using Windows.Storage;
@@ -45,7 +44,7 @@ namespace GoodTimeStudio.MyPhone.Device
             _started = false;
             CurrentDevice = bluetoothDevice;
             _logger = App.Current.Services.GetRequiredService<ILogger<DeviceManager>>();
-            FileInfo dbFile = new FileInfo(
+            var dbFile = new FileInfo(
                 Path.Join(
                     ApplicationData.Current.LocalFolder.Path,
                     "DeviceData",
@@ -100,11 +99,11 @@ namespace GoodTimeStudio.MyPhone.Device
         private async Task InitializeDeviceServices()
         {
             #region Init CallService
-            PhoneLineTransportDevice? phoneLineTransportDevice = await PhoneLineTransportHelper.GetPhoneLineTransportFromBluetoothDevice(CurrentDevice);
+            var phoneLineTransportDevice = await PhoneLineTransportHelper.GetPhoneLineTransportFromBluetoothDevice(CurrentDevice);
             if (phoneLineTransportDevice != null)
             {
                 _logger.LogInformation("Requesting PhoneLineTransportDeivce access.");
-                DeviceAccessStatus accessStatus = await phoneLineTransportDevice.RequestAccessAsync();
+                var accessStatus = await phoneLineTransportDevice.RequestAccessAsync();
                 if (accessStatus == DeviceAccessStatus.Allowed)
                 {
                     _logger.LogInformation("PhoneLineTransportDeivce access granted.");
@@ -149,7 +148,7 @@ namespace GoodTimeStudio.MyPhone.Device
                 throw new InvalidOperationException("You must first call ConnectAsync or TryReconnect (return true).");
             }
 
-            bool callServiceConnected = false;
+            var callServiceConnected = false;
             if (CallService != null)
             {
                 _logger.LogInformation("Connecting to CallService.");
@@ -169,7 +168,7 @@ namespace GoodTimeStudio.MyPhone.Device
             }
 
             _logger.LogInformation("Connecting to SmsService.");
-            bool smsServiceConnected = await SmsService!.ConnectAsync();
+            var smsServiceConnected = await SmsService!.ConnectAsync();
             if (smsServiceConnected)
             {
                 _logger.LogInformation("SmsService connected.");
@@ -184,7 +183,7 @@ namespace GoodTimeStudio.MyPhone.Device
             }
 
             _logger.LogInformation("Connecting to PhonebookService.");
-            bool phonebookServiceConnected = await PhonebookService!.ConnectAsync();
+            var phonebookServiceConnected = await PhonebookService!.ConnectAsync();
             if (phonebookServiceConnected)
             {
                 _logger.LogInformation("PhonebookService connected.");

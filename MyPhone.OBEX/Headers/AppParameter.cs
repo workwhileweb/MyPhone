@@ -9,9 +9,9 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
     {
         public byte TagId { get; set; }
 
-        public byte ContentLength { get => (byte)Buffer.Length; }
+        public byte ContentLength => (byte)Buffer.Length;
 
-        public byte TotalLength { get => (byte)(ContentLength + 2 * sizeof(byte)); }
+        public byte TotalLength => (byte)(ContentLength + 2 * sizeof(byte));
 
         public byte[] Buffer { get; }
 
@@ -34,7 +34,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
 
         public R GetValue<I, R>() where I : IBufferContentInterpreter<R>, new()
         {
-            I interpreter = new I();
+            var interpreter = new I();
             return GetValue(interpreter);
         }
 
@@ -57,7 +57,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Headers
 
         public override int GetHashCode()
         {
-            int hashCode = -913184727;
+            var hashCode = -913184727;
             hashCode = hashCode * -1521134295 + TagId.GetHashCode();
             hashCode = hashCode * -1521134295 + ByteArrayEqualityComparer.Default.GetHashCode(Buffer);
             return hashCode;

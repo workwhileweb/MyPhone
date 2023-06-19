@@ -1,10 +1,6 @@
 ﻿using GoodTimeStudio.MyPhone.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 
@@ -42,7 +38,7 @@ namespace GoodTimeStudio.MyPhone
         public DeviceServiceException? StopReason { get; private set; }
 
         private DynamicTimer? _retryTimer;
-        private static DynamicTimerSchedule[] s_schedules = new DynamicTimerSchedule[]
+        private static DynamicTimerSchedule[] s_schedules = new[]
         {
             new DynamicTimerSchedule(TimeSpan.FromSeconds(15), 4), // T+1min
             new DynamicTimerSchedule(TimeSpan.FromSeconds(30), 10), // T+1min -> T+6min (5min in total)
@@ -73,7 +69,7 @@ namespace GoodTimeStudio.MyPhone
             State = DeviceServiceProviderState.Connecting;
             try
             {
-                bool success = await ConnectToServiceAsync();
+                var success = await ConnectToServiceAsync();
                 if (success)
                 {
                     State = DeviceServiceProviderState.Connected;

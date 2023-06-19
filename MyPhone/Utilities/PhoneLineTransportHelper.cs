@@ -11,7 +11,7 @@ namespace GoodTimeStudio.MyPhone.Helpers
     public class PhoneLineTransportHelper
     {
         /// <summary>
-        /// Retrive a corresponding <see cref="PhoneLineTransportDevice"/> object from a <see cref="BluetoothDevice"/>
+        /// Retrieve a corresponding <see cref="PhoneLineTransportDevice"/> object from a <see cref="BluetoothDevice"/>
         /// </summary>
         /// <param name="bt">the bluetooth device</param>
         /// <returns>
@@ -35,26 +35,19 @@ namespace GoodTimeStudio.MyPhone.Helpers
             }
 
             const string deviceInterfaceBluetoothAddressKey = "System.DeviceInterface.Bluetooth.DeviceAddress";
-            var phoneLineDevsInfo = await DeviceInformation.FindAllAsync(PhoneLineTransportDevice.GetDeviceSelector(), new string[] { deviceInterfaceBluetoothAddressKey });
-            DeviceInformation? matchPhoneLineDevInfo = phoneLineDevsInfo.Where(dev =>
+            var phoneLineDevsInfo = await DeviceInformation.FindAllAsync(PhoneLineTransportDevice.GetDeviceSelector(), new[] { deviceInterfaceBluetoothAddressKey });
+            var matchPhoneLineDevInfo = phoneLineDevsInfo.Where(dev =>
             {
-                string? phoneLineDevAddress = (string?)dev.Properties[deviceInterfaceBluetoothAddressKey];
-                if (ulong.TryParse(phoneLineDevAddress, NumberStyles.HexNumber, null, out ulong address))
+                var phoneLineDevAddress = (string?)dev.Properties[deviceInterfaceBluetoothAddressKey];
+                if (ulong.TryParse(phoneLineDevAddress, NumberStyles.HexNumber, null, out var address))
                 {
                     return address == bt.BluetoothAddress;
                 }
-                else
-                {
-                    return false;
-                }
+
+                return false;
             }).FirstOrDefault();
 
-            if (matchPhoneLineDevInfo == null)
-            {
-                return null;
-            }
-
-            return PhoneLineTransportDevice.FromId(matchPhoneLineDevInfo.Id);
+            return matchPhoneLineDevInfo == null ? null : PhoneLineTransportDevice.FromId(matchPhoneLineDevInfo.Id);
         }
     }
 }

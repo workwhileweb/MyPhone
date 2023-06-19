@@ -54,10 +54,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
 
         public Guid ServiceUuid { get; set; }
 
-        public bool ServerStarted
-        {
-            get => _socketListener != null;
-        }
+        public bool ServerStarted => _socketListener != null;
 
         private StreamSocketListener? _socketListener;
         private RfcommServiceProvider? _serviceProvider;
@@ -99,17 +96,15 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
             }
             catch (Exception ex)
             {
-                SocketErrorStatus socketErrorStatus = SocketError.GetStatus(ex.HResult);
+                var socketErrorStatus = SocketError.GetStatus(ex.HResult);
                 if (socketErrorStatus != SocketErrorStatus.Unknown)
                 {
                     throw new BluetoothObexSessionException(
                         "Unable to bind and start the OBEX server on Bluetooth socket",
                         socketError: socketErrorStatus);
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             _socketListener = socketListener;
@@ -121,7 +116,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
             {
                 return;
             }
-            T obexServer = CreateObexServer(args.Socket);
+            var obexServer = CreateObexServer(args.Socket);
             BluetoothClientInformation clientInformation = new(args.Socket.Information.RemoteAddress, args.Socket.Information.RemoteServiceName);
             _connections[clientInformation] = obexServer;
             ClientAccepted?.Invoke(this, new BluetoothObexServerSessionClientAcceptedEventArgs<T>(clientInformation, obexServer));
@@ -148,7 +143,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
         public void Dispose()
         {
             _serviceProvider?.StopAdvertising();
-            foreach (T obexServer in _connections.Values)
+            foreach (var obexServer in _connections.Values)
             {
                 obexServer.StopServer();
             }

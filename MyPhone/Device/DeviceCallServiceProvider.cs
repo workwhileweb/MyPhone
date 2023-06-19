@@ -1,10 +1,7 @@
-﻿using GoodTimeStudio.MyPhone.Utilities;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Calls;
 using Windows.Devices.Bluetooth;
@@ -49,7 +46,7 @@ namespace GoodTimeStudio.MyPhone
             }
             _logger.LogInformation(AppLogEvents.CallServiceConnect, "PhoneLineTransportDevice registered.");
 
-            bool success = await TransportDevice.ConnectAsync();
+            var success = await TransportDevice.ConnectAsync();
             if (success)
             {
                 _logger.LogInformation(AppLogEvents.CallServiceConnect, "CallService connected.");
@@ -73,6 +70,7 @@ namespace GoodTimeStudio.MyPhone
             }
 
             await _taskInitPhoneLine;
+            
             if (_selectedPhoneLine == null || !_selectedPhoneLine.CanDial)
             {
                 throw new OperationCanceledException();
@@ -95,8 +93,8 @@ namespace GoodTimeStudio.MyPhone
         #region Init PhoneLine
         public static async Task<PhoneLineWatcher> CreatePhoneLineWatcherAsync()
         {
-            PhoneCallStore store = await PhoneCallManager.RequestStoreAsync();
-            PhoneLineWatcher watcher = store.RequestLineWatcher();
+            var store = await PhoneCallManager.RequestStoreAsync();
+            var watcher = store.RequestLineWatcher();
             return watcher;
         }
 
@@ -104,10 +102,10 @@ namespace GoodTimeStudio.MyPhone
         private async Task InitPhoneLine()
         {
             _logger.LogInformation(AppLogEvents.CallServicePhoneLineDiscovery, "Searching PhoneLine...");
-            List<PhoneLine> phoneLinesAvailable = new List<PhoneLine>();
+            List<PhoneLine> phoneLinesAvailable = new();
             var lineEnumerationCompletion = new TaskCompletionSource<bool>();
 
-            PhoneLineWatcher phoneLineWatcher = await CreatePhoneLineWatcherAsync();
+            var phoneLineWatcher = await CreatePhoneLineWatcherAsync();
             _logger.LogInformation(AppLogEvents.CallServicePhoneLineDiscovery, "PhoneLineWatcher created");
             phoneLineWatcher.LineAdded += async (o, args) =>
             {
@@ -124,8 +122,7 @@ namespace GoodTimeStudio.MyPhone
             {
                 _logger.LogInformation(AppLogEvents.CallServicePhoneLineDiscovery, "PhoneLineWatcher enumeration completed.");
                 _selectedPhoneLine = phoneLinesAvailable
-                    .Where(pl => pl.TransportDeviceId == TransportDevice.DeviceId)
-                    .FirstOrDefault();
+                    .FirstOrDefault(pl => pl.TransportDeviceId == TransportDevice.DeviceId);
             }
             else
             {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,10 +20,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
 
         public ObexServiceUuid TargetObexService { get; set; }
 
-        public bool Connected
-        {
-            get => _socket != null;
-        }
+        public bool Connected => _socket != null;
 
         public BluetoothDevice Device { get; }
 
@@ -36,7 +32,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
         private RfcommDeviceService? _service;
         private StreamSocket? _socket;
 
-        public BluetoothObexClientSession(BluetoothDevice bluetoothDevice, Guid rfcommServiceUuid, ObexServiceUuid targetObexService)
+        protected BluetoothObexClientSession(BluetoothDevice bluetoothDevice, Guid rfcommServiceUuid, ObexServiceUuid targetObexService)
         {
             ServiceUuid = rfcommServiceUuid;
             TargetObexService = targetObexService;
@@ -49,7 +45,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
         /// <exception cref="BluetoothObexSessionException">Failed to establish a bluetooth Rfcomm socket channel</exception>
         public async Task ConnectAsync()
         {
-            RfcommDeviceServicesResult result = await Device.GetRfcommServicesAsync(BluetoothCacheMode.Uncached);
+            var result = await Device.GetRfcommServicesAsync(BluetoothCacheMode.Uncached);
 
             if (result.Error != BluetoothError.Success)
             {
@@ -63,13 +59,13 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
                 // TODO: improve remote device offline detection (maybe BLE?)
                 throw new BluetoothDeviceNotAvailableException("Unable to connect to the remote Bluetooth device.");
             }
-            RfcommDeviceService? service = result.Services.Where(rfs => rfs.ServiceId.Uuid == ServiceUuid).FirstOrDefault();
+            var service = result.Services.FirstOrDefault(rfs => rfs.ServiceId.Uuid == ServiceUuid);
             if (service == null)
             {
                 throw new BluetoothServiceNotSupportedException($"The remote bluetooth device does not support service: {ServiceUuid}");
             }
             _service = service;
-            DeviceAccessStatus accessStatus = await _service.RequestAccessAsync();
+            var accessStatus = await _service.RequestAccessAsync();
             if (accessStatus != DeviceAccessStatus.Allowed)
             {
                 throw new BluetoothObexSessionException($"The operating system does not allowed us to access this Rfcomm service. Reason: {accessStatus}");
@@ -82,10 +78,10 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
             SdpRecords = sdpRecords;
             if (!CheckFeaturesRequirementBySdpRecords())
             {
-                throw new BluetoothServiceNotSupportedException($"The remote bluetooth device provided the required servic: {ServiceUuid}, but it does not meet the feature requirements.");
+                throw new BluetoothServiceNotSupportedException($"The remote bluetooth device provided the required service: {ServiceUuid}, but it does not meet the feature requirements.");
             }
 
-            StreamSocket socket = new StreamSocket();
+            var socket = new StreamSocket();
             try
             {
                 await socket.ConnectAsync(_service.ConnectionHostName, _service.ConnectionServiceName
@@ -95,17 +91,15 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
             {
                 socket.Dispose();
 
-                SocketErrorStatus error = SocketError.GetStatus(ex.HResult);
+                var error = SocketError.GetStatus(ex.HResult);
                 if (error != SocketErrorStatus.Unknown)
                 {
                     throw new BluetoothObexSessionException(
                         $"Unable to connect to the remote RFCOMM service. Reason: {error}",
                         socketError: error);
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
 
@@ -138,7 +132,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
         public abstract T CreateObexClient(StreamSocket socket);
 
         /// <summary>
-        /// Checking agasint SDP records of the RFComm service to test whether it provides necessary features.
+        /// Checking against SDP records of the RFComm service to test whether it provides necessary features.
         /// </summary>
         /// <remarks>You can assume <see cref="SdpRecords"/> is not null.</remarks>
         /// <returns>
@@ -153,14 +147,8 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
 
         public virtual void Dispose()
         {
-            if (_socket != null)
-            {
-                _socket.Dispose();
-            }
-            if (_service != null)
-            {
-                _service.Dispose();
-            }
+            _socket?.Dispose();
+            _service?.Dispose();
         }
     }
 }

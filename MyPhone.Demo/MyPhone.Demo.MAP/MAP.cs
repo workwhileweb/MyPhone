@@ -1,11 +1,12 @@
 ﻿using MixERP.Net.VCards.Models;
-using MyPhone.OBEX;
-using MyPhone.OBEX.Map;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
+using GoodTimeStudio.MyPhone.OBEX;
+using GoodTimeStudio.MyPhone.OBEX.Bluetooth;
+using GoodTimeStudio.MyPhone.OBEX.Map;
 
 namespace GoodTimeStudio.MyPhone.Demo
 {
@@ -50,7 +51,7 @@ namespace GoodTimeStudio.MyPhone.Demo
             DrawLine();
             try
             {
-                await MasClientSession.ObexClient.SetNotificationRegistration(true);
+                await MasClientSession.ObexClient?.SetNotificationRegistrationAsync(true)!;
                 MnsServerSession.ClientAccepted += MnsServerSession_ClientAccepted;
                 MnsServerSession.ClientDisconnected += MnsServerSession_ClientDisconnected;
             }

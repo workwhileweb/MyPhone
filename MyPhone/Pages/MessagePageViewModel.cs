@@ -19,23 +19,23 @@ namespace GoodTimeStudio.MyPhone.Pages
             var vcard = new MixERP.Net.VCards.VCard
             {
                 FormattedName = "John",
-                Telephones = new List<Telephone> { new Telephone { Number = "13805121234" } }
+                Telephones = new List<Telephone> { new() { Number = "13805121234" } }
             };
             Conversations.Add(new Conversation
             {
                 ContactInfo = vcard,
-                Messages = new ObservableCollection<BMessage> { new BMessage(BMessageStatus.READ, "telecom", "telecom", vcard, "UTF-8", 0, "Test message") },
+                Messages = new ObservableCollection<BMessage> { new(BMessageStatus.READ, "telecom", "telecom", vcard, "UTF-8", 0, "Test message") },
             });
 
             var vcard2 = new MixERP.Net.VCards.VCard
             {
                 FormattedName = "Haha",
-                Telephones = new List<Telephone> { new Telephone { Number = "13805121234" } }
+                Telephones = new List<Telephone> { new() { Number = "13805121234" } }
             };
             Conversations.Add(new Conversation
             {
                 ContactInfo = vcard2,
-                Messages = new ObservableCollection<BMessage> { new BMessage(BMessageStatus.READ, "telecom", "telecom", vcard, "UTF-8", 0, "Hello world") },
+                Messages = new ObservableCollection<BMessage> { new(BMessageStatus.READ, "telecom", "telecom", vcard, "UTF-8", 0, "Hello world") },
             });
         }
     }

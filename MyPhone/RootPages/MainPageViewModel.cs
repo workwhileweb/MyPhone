@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.WinUI;
-using Microsoft.UI.Xaml;
 using System;
 using System.Collections.ObjectModel;
 using Windows.ApplicationModel.Resources;
@@ -17,18 +15,18 @@ namespace GoodTimeStudio.MyPhone.RootPages
 
         public MainPageViewModel()
         {
-            ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse("Resources");
+            var resourceLoader = ResourceLoader.GetForViewIndependentUse("Resources");
             navigationMenus = new ObservableCollection<NavigationMenu>()
             {
-                new NavigationMenu(name:resourceLoader.GetString("Item_Call"), glyphIcon: "\uE717", id: "call"),
-                new NavigationMenu(name:resourceLoader.GetString("Item_Message"), glyphIcon: "\uE8BD", id: "message"),
-                new NavigationMenu(name:resourceLoader.GetString("Item_Contacts"), glyphIcon: "\uE77B", id : "contacts"),
-                new NavigationMenu(name:resourceLoader.GetString("Item_Debug"), glyphIcon: "\uEBE8", id : "debug"),
+                new(name:resourceLoader.GetString("Item_Call"), glyphIcon: "\uE717", id: "call"),
+                new(name:resourceLoader.GetString("Item_Message"), glyphIcon: "\uE8BD", id: "message"),
+                new(name:resourceLoader.GetString("Item_Contacts"), glyphIcon: "\uE77B", id : "contacts"),
+                new(name:resourceLoader.GetString("Item_Debug"), glyphIcon: "\uEBE8", id : "debug"),
             };
 
             navigationFooterMenus = new ObservableCollection<NavigationMenu>()
             {
-                new NavigationMenu(name: resourceLoader.GetString("Item_Settings"), glyphIcon: "\uE713", id : "settings")
+                new(name: resourceLoader.GetString("Item_Settings"), glyphIcon: "\uE713", id : "settings")
             };
         }
     }

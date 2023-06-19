@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Windows.Devices.Bluetooth;
 
 namespace GoodTimeStudio.MyPhone.DeviceTest
 {

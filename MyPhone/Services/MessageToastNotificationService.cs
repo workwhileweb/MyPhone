@@ -1,11 +1,6 @@
 ﻿using CommunityToolkit.WinUI.Notifications;
 using GoodTimeStudio.MyPhone.OBEX;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodTimeStudio.MyPhone.Services
 {

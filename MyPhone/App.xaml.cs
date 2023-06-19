@@ -1,29 +1,20 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.WinUI.Notifications;
+﻿using CommunityToolkit.WinUI.Notifications;
 using GoodTimeStudio.MyPhone.Device;
-using GoodTimeStudio.MyPhone.Models;
-using GoodTimeStudio.MyPhone.Pages;
 using GoodTimeStudio.MyPhone.RootPages ;
 using GoodTimeStudio.MyPhone.Services;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
 using Shiny;
 using System;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -39,7 +30,7 @@ namespace GoodTimeStudio.MyPhone
         /// <summary>
         /// Gets the current <see cref="App"/> instance in use
         /// </summary>
-        public static new App Current => (App)Application.Current;
+        public new static App Current => (App)Application.Current;
 
         /// <summary>
         /// Gets the <see cref="IServiceProvider"/> instance to resolve application services.
@@ -76,7 +67,7 @@ namespace GoodTimeStudio.MyPhone
             _settingsService = Services.GetRequiredService<ISettingsService>();
             _logger = Services.GetRequiredService<ILogger<App>>();
 
-            string? appCenterSecrets = Configuration["ApiSecrets:MsftAppCenter"];
+            var appCenterSecrets = Configuration["ApiSecrets:MsftAppCenter"];
             if (appCenterSecrets != null)
             {
                 _logger.LogInformation("Found App Center secret, starting App Center.");
@@ -97,12 +88,12 @@ namespace GoodTimeStudio.MyPhone
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected async override void OnLaunched(LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(LaunchActivatedEventArgs args)
         {
             _logger.LogInformation(AppLogEvents.AppLaunch, "Launching My Phone App.");
 
-            AppInstance currentInstance = AppInstance.GetCurrent();
-            AppActivationArguments activationArgs = currentInstance.GetActivatedEventArgs();
+            var currentInstance = AppInstance.GetCurrent();
+            var activationArgs = currentInstance.GetActivatedEventArgs();
             currentInstance.Activated += MainInstance_RedirectedActivated;
             ToastNotificationManagerCompat.OnActivated += ToastNotificationManagerCompat_OnActivated;
 
@@ -162,14 +153,14 @@ namespace GoodTimeStudio.MyPhone
         /// </summary>
         private async Task TryAutoSetupRegisteredDevice()
         {
-            string? deviceId = _settingsService.GetValue<string>(_settingsService.KeyCurrentDeviceId);
+            var deviceId = _settingsService.GetValue<string>(_settingsService.KeyCurrentDeviceId);
             if (string.IsNullOrEmpty(deviceId))
             {
                 _logger.LogInformation(AppLogEvents.AppLaunch, "No registered device found");
                 return;
             }
 
-            DeviceInformation deviceInformation = await DeviceInformation.CreateFromIdAsync(deviceId);
+            var deviceInformation = await DeviceInformation.CreateFromIdAsync(deviceId);
             _logger.LogInformation(AppLogEvents.AppLaunch, "Found registered device: {DeviceName}", deviceInformation.Name);
             try
             {
@@ -210,6 +201,7 @@ namespace GoodTimeStudio.MyPhone
             if (!_devicePairingService.IsPaired(deviceInformation))
             {
                 _logger.LogInformation(AppLogEvents.DeviceSetup, "Device not paired, attempting to pair");
+                
                 var paringResult = await _devicePairingService.PairDeviceAsync(deviceInformation);
                 if (paringResult.Status != DevicePairingResultStatus.Paired)
                 {
@@ -218,17 +210,16 @@ namespace GoodTimeStudio.MyPhone
                 _logger.LogInformation(AppLogEvents.DeviceSetup, "Device {DeviceName} paired successfully.", deviceInformation.Name);
             }
 
-            BluetoothDevice bluetoothDevice = await BluetoothDevice.FromIdAsync(deviceInformation.Id);
+            var bluetoothDevice = await BluetoothDevice.FromIdAsync(deviceInformation.Id);
+            
             _logger.LogInformation(AppLogEvents.DeviceSetup, "Requesting BluetoothDevice access.");
-            DeviceAccessStatus status = await bluetoothDevice.RequestAccessAsync();
+            var status = await bluetoothDevice.RequestAccessAsync();
             if (status != DeviceAccessStatus.Allowed)
             {
                 throw new UnauthorizedAccessException($"The operating system denied the access to this BluetoothDevice. Reason: {status}");
             }
-            else
-            {
-                _logger.LogInformation(AppLogEvents.DeviceSetup, "BluetoothDevice access granted.");
-            }
+
+            _logger.LogInformation(AppLogEvents.DeviceSetup, "BluetoothDevice access granted.");
 
             if (registerDevice)
             {

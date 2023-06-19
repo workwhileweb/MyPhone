@@ -30,7 +30,7 @@ namespace GoodTimeStudio.MyPhone.Pages
             {
                 // We need to store it because when assigning a new value to PhoneNumber, the UI control will reset this 
                 // Note: it will not be reset on unit test environment
-                int start = SelectionStart;
+                var start = SelectionStart;
                 PhoneNumber = PhoneNumber!.Remove(SelectionStart, SelectionLength); // SelectionLength != 0 will gurantee PhoneNumber not null
                 SelectionLength = 0;
                 SelectionStart = start;
@@ -54,7 +54,7 @@ namespace GoodTimeStudio.MyPhone.Pages
             PhoneNumberInputFocus?.Invoke(this, new EventArgs());
             if (PhoneNumber != null)
             {
-                int pos = SelectionStart;
+                var pos = SelectionStart;
                 if (SelectionLength != 0)
                 {
                     // There is a bug in SelectionBindingTextBox. 
@@ -88,10 +88,7 @@ namespace GoodTimeStudio.MyPhone.Pages
                 {
                     await deviceManager.CallService.CallAsync(PhoneNumber);
                 }
-                else
-                {
-                    // TODO: what if CallService is not available 
-                }
+                // TODO: what if CallService is not available 
             }
         }
 

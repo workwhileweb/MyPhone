@@ -6,9 +6,9 @@ namespace GoodTimeStudio.MyPhone.OBEX.Map
 {
     public class BluetoothMnsServerSession : BluetoothObexServerSession<MnsServer>
     {
-        public static readonly Guid MAP_MNS_Id = new Guid("00001133-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid MapMnsId = new("00001133-0000-1000-8000-00805f9b34fb");
 
-        public BluetoothMnsServerSession() : base(MAP_MNS_Id, 1)
+        public BluetoothMnsServerSession() : base(MapMnsId, 1)
         {
         }
 

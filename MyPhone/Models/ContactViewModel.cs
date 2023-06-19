@@ -5,16 +5,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
-using Windows.Graphics.Imaging;
 
 namespace GoodTimeStudio.MyPhone.Models
 {
@@ -34,7 +30,7 @@ namespace GoodTimeStudio.MyPhone.Models
             _logger = logger;
             Contact = contact;
             Info = new ObservableCollection<ContactDetialInformation>();
-            ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse("Resources");
+            var resourceLoader = ResourceLoader.GetForViewIndependentUse("Resources");
 
             if (contact.Detail.Telephones != null)
             {
@@ -101,10 +97,10 @@ namespace GoodTimeStudio.MyPhone.Models
                 {
                     try
                     {
-                        BitmapImage image = new BitmapImage();
+                        var image = new BitmapImage();
                         image.ImageFailed += Image_ImageFailed;
 
-                        using (MemoryStream imageStream = new MemoryStream())
+                        using (var imageStream = new MemoryStream())
                         {
                             imageStream.Write(Convert.FromBase64String(vCardPhoto.Contents));
                             await imageStream.FlushAsync();
@@ -144,7 +140,7 @@ namespace GoodTimeStudio.MyPhone.Models
 
         public string? PrimaryActionTooltip { get; }
 
-        public bool HasSecondaryAction { get => SecondaryAction != null; }
+        public bool HasSecondaryAction => SecondaryAction != null;
 
         public Action<ContactDetialInformation>? SecondaryAction { get; }
 
@@ -172,7 +168,7 @@ namespace GoodTimeStudio.MyPhone.Models
         [RelayCommand]
         private void CopyValue()
         {
-            DataPackage dataPackage = new DataPackage();
+            var dataPackage = new DataPackage();
             dataPackage.RequestedOperation = DataPackageOperation.Copy;
             dataPackage.SetText(Value);
             Clipboard.SetContent(dataPackage);

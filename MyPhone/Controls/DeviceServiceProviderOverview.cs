@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Documents;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -49,8 +42,8 @@ namespace GoodTimeStudio.MyPhone.Controls
 
         public string ServiceName
         {
-            get { return (string)GetValue(ServiceNameProperty); }
-            set { SetValue(ServiceNameProperty, value); }
+            get => (string)GetValue(ServiceNameProperty);
+            set => SetValue(ServiceNameProperty, value);
         }
         public static readonly DependencyProperty ServiceNameProperty =
             DependencyProperty.Register(
@@ -61,8 +54,8 @@ namespace GoodTimeStudio.MyPhone.Controls
 
         public string GlyphIcon
         {
-            get { return (string)GetValue(GlyphIconProperty); }
-            set { SetValue(GlyphIconProperty, value); }
+            get => (string)GetValue(GlyphIconProperty);
+            set => SetValue(GlyphIconProperty, value);
         }
         public static readonly DependencyProperty GlyphIconProperty =
             DependencyProperty.Register(
@@ -73,8 +66,8 @@ namespace GoodTimeStudio.MyPhone.Controls
 
         public DeviceServiceProviderState ProviderState
         {
-            get { return (DeviceServiceProviderState)GetValue(ProviderStateProperty); }
-            set { SetValue(ProviderStateProperty, value); }
+            get => (DeviceServiceProviderState)GetValue(ProviderStateProperty);
+            set => SetValue(ProviderStateProperty, value);
         }
         public static readonly DependencyProperty ProviderStateProperty =
             DependencyProperty.Register(
@@ -84,11 +77,11 @@ namespace GoodTimeStudio.MyPhone.Controls
                 new PropertyMetadata(DeviceServiceProviderState.Stopped, new PropertyChangedCallback(OnProviderStateChanged)));
         private static void OnProviderStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            DeviceServiceProviderOverview? overview = d as DeviceServiceProviderOverview;
+            var overview = d as DeviceServiceProviderOverview;
             Debug.Assert(overview != null);
 
-            DeviceServiceProviderState previousState = (DeviceServiceProviderState)e.OldValue;
-            DeviceServiceProviderState newState = (DeviceServiceProviderState)e.NewValue;
+            var previousState = (DeviceServiceProviderState)e.OldValue;
+            var newState = (DeviceServiceProviderState)e.NewValue;
 
             if (previousState != newState)
             {
@@ -99,8 +92,8 @@ namespace GoodTimeStudio.MyPhone.Controls
 
         public string? StatusMessage
         {
-            get { return (string)GetValue(StatusMessageProperty); }
-            set { SetValue(StatusMessageProperty, value); }
+            get => (string)GetValue(StatusMessageProperty);
+            set => SetValue(StatusMessageProperty, value);
         }
         public static readonly DependencyProperty StatusMessageProperty =
             DependencyProperty.Register(
@@ -111,14 +104,14 @@ namespace GoodTimeStudio.MyPhone.Controls
 
         public event RoutedEventHandler RetryClicked
         {
-            add { _part_retryButton!.Click += value; }
-            remove { _part_retryButton!.Click -= value; }
+            add => _part_retryButton!.Click += value;
+            remove => _part_retryButton!.Click -= value;
         }
 
         public ICommand? RetryCommand
         {
-            get { return (ICommand)GetValue(RetryCommandProperty); }
-            set { SetValue(RetryCommandProperty, value); }
+            get => (ICommand)GetValue(RetryCommandProperty);
+            set => SetValue(RetryCommandProperty, value);
         }
         public static readonly DependencyProperty RetryCommandProperty =
             DependencyProperty.Register(
@@ -137,7 +130,7 @@ namespace GoodTimeStudio.MyPhone.Controls
         {
             base.OnApplyTemplate();
 
-            Button? retryBtn = GetTemplateChild(PartRetryButton) as Button;
+            var retryBtn = GetTemplateChild(PartRetryButton) as Button;
             if (retryBtn == null)
             {
                 throw new KeyNotFoundException($"Template part {PartRetryButton} not available");

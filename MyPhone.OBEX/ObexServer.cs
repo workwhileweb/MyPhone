@@ -1,7 +1,5 @@
-﻿using GoodTimeStudio.MyPhone.OBEX.Headers;
-using System;
+﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
@@ -34,7 +32,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
                 ObexPacket packet = await ObexPacket.ReadFromStream<ObexConnectPacket>(_reader);
                 if (packet.Opcode.ObexOperation == ObexOperation.Connect)
                 {
-                    if (packet.Headers.TryGetValue(HeaderId.Target, out ObexHeader? header))
+                    if (packet.Headers.TryGetValue(HeaderId.Target, out var header))
                     {
                         if (Enumerable.SequenceEqual(header.Buffer.ToArray(), _serviceUuid.Value))
                         {
@@ -57,9 +55,9 @@ namespace GoodTimeStudio.MyPhone.OBEX
             {
                 _cts.Token.ThrowIfCancellationRequested();
 
-                ObexPacket packet = await ObexPacket.ReadFromStream(_reader);
+                var packet = await ObexPacket.ReadFromStream(_reader);
 
-                ObexPacket? response = OnClientRequest(packet);
+                var response = OnClientRequest(packet);
                 if (response != null)
                 {
                     _writer.WriteBuffer(response.ToBuffer());

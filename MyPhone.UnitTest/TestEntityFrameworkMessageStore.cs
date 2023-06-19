@@ -23,7 +23,7 @@ namespace MyPhone.UnitTest
         [Fact]
         public async Task TestSaveMessage()
         {
-            Message message = new Message
+            var message = new Message
             {
                 Id = "1",
                 Status = MessageStatus.Unread,
@@ -44,7 +44,7 @@ namespace MyPhone.UnitTest
         {
             Assert.Null(await _messageStore.GetByIdAsync("10"));
 
-            Message message = new Message
+            var message = new Message
             {
                 Id = "2022",
                 Status = MessageStatus.Unread,
@@ -59,7 +59,7 @@ namespace MyPhone.UnitTest
             };
             await _messageStore.AddAsync(message);
 
-            Message? msg = await _messageStore.GetByIdAsync("2022");
+            var msg = await _messageStore.GetByIdAsync("2022");
             Assert.NotNull(msg);
             Assert.Equal(message, msg);
         }

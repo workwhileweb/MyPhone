@@ -1,8 +1,6 @@
 ﻿using GoodTimeStudio.MyPhone.OBEX.Bluetooth;
 using System;
-using System.Buffers;
 using System.Buffers.Binary;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Windows.Devices.Bluetooth;
@@ -12,7 +10,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Pbap
 {
     public class BluetoothPbapClientSession : BluetoothObexClientSession<PbapClient>
     {
-        public static readonly Guid PHONE_BOOK_ACCESS_ID = new Guid("0000112f-0000-1000-8000-00805f9b34fb");
+        public static readonly Guid PHONE_BOOK_ACCESS_ID = new("0000112f-0000-1000-8000-00805f9b34fb");
 
         public PbapSupportedFeatures SupportedFeatures { get; private set; }
 
@@ -27,7 +25,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Pbap
             Debug.Assert(SdpRecords != null);
 
             {
-                if (SdpRecords.TryGetValue(0x9, out IReadOnlyCollection<byte>? rawAttributeValue)
+                if (SdpRecords.TryGetValue(0x9, out var rawAttributeValue)
                     && rawAttributeValue != null
                     && rawAttributeValue.Count >= 10)
                 {
@@ -40,7 +38,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Pbap
             }
 
             {
-                if (SdpRecords.TryGetValue(0x317, out IReadOnlyCollection<byte>? rawAttributeValue) && rawAttributeValue != null)
+                if (SdpRecords.TryGetValue(0x317, out var rawAttributeValue) && rawAttributeValue != null)
                 {
                     SupportedFeatures = (PbapSupportedFeatures)BinaryPrimitives.ReadInt32BigEndian(
                         new ReadOnlySpan<byte>(rawAttributeValue.Skip(1).ToArray()));

@@ -1,7 +1,5 @@
 ﻿using GoodTimeStudio.MyPhone.OBEX.Bluetooth;
 using GoodTimeStudio.MyPhone.OBEX.Map;
-using Microsoft.Extensions.Configuration;
-using Windows.Devices.Bluetooth;
 
 namespace GoodTimeStudio.MyPhone.DeviceTest
 {
@@ -26,9 +24,9 @@ namespace GoodTimeStudio.MyPhone.DeviceTest
         [SkippableFact]
         public async Task TestTraverseFolderAsync()
         {
-            SmsFolder root = await Session.ObexClient!.TraverseFolderAsync(false);
+            var root = await Session.ObexClient!.TraverseFolderAsync(false);
             Assert.Equal(1, root.Children.Count);
-            SmsFolder telecom = root.Children[0];
+            var telecom = root.Children[0];
             Assert.Equal(root, telecom.Parent);
             Assert.Equal("telecom", telecom.Name);
 
@@ -36,7 +34,7 @@ namespace GoodTimeStudio.MyPhone.DeviceTest
             Skip.If(telecom.Children.Count == 0, "Seems like your phone does not support folder traversal, is it iPhone?"); 
             Assert.Equal(1, telecom.Children.Count);
 
-            SmsFolder msg = telecom.Children[0];
+            var msg = telecom.Children[0];
             Assert.Equal(telecom, msg.Parent);
             Assert.Equal("msg", msg.Name);
             Assert.True(msg.Children.Count >= 5);
@@ -58,7 +56,7 @@ namespace GoodTimeStudio.MyPhone.DeviceTest
         {
             await Session.ObexClient!.SetFolderAsync(SetPathMode.EnterFolder, "telecom");
             await Session.ObexClient!.SetFolderAsync(SetPathMode.EnterFolder, "msg");
-            List<string> handles = await Session.ObexClient!.GetAllMessagesAsync("inbox");
+            var handles = await Session.ObexClient!.GetAllMessagesAsync("inbox");
             Assert.True(handles.Count > 0);
         }
 

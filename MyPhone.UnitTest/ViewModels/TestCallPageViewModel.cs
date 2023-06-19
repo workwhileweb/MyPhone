@@ -14,7 +14,7 @@ namespace MyPhone.UnitTest.ViewModels
 
         private void InputOneNine()
         {
-            for (int i = 1; i < 10; i++)
+            for (var i = 1; i < 10; i++)
             {
                 ViewModel.PressDigit(i.ToString());
             }
@@ -36,7 +36,7 @@ namespace MyPhone.UnitTest.ViewModels
             ViewModel.PhoneNumber = "123456789";
             ViewModel.SelectionStart = 3;
             ViewModel.SelectionLength = 3;
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 ViewModel.PressDigit("6");
             }
@@ -51,7 +51,7 @@ namespace MyPhone.UnitTest.ViewModels
         {
             InputOneNine();
 
-            for (int i = 1; i < 10; i++)
+            for (var i = 1; i < 10; i++)
             {
                 ViewModel.PressBackSpace();
             }
@@ -64,7 +64,7 @@ namespace MyPhone.UnitTest.ViewModels
         [Fact]
         public void TestBackSpaceWithEmptyPhoneNumber()
         {
-            for (int i = 0; i < 5; i++)
+            for (var i = 0; i < 5; i++)
             {
                 ViewModel.PressBackSpace();
             }

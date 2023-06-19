@@ -25,7 +25,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Streams
 
         public string GetValue(ReadOnlySpan<byte> buffer)
         {
-            int len = buffer.Length;
+            var len = buffer.Length;
             if (StringIsNullTerminated)
             {
                 len -= StringEncoding.GetByteCount("\0");

@@ -35,10 +35,10 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
 
         public async Task InitializeAsync()
         {
-            Task connect = _client.ConnectAsync(ObexServiceUuid.MessageAccess); // UUID does not matter here
+            var connect = _client.ConnectAsync(ObexServiceUuid.MessageAccess); // UUID does not matter here
             await Task.Run(async () =>
             {
-                ObexConnectPacket req = await ObexPacket.ReadFromStream<ObexConnectPacket>(_serverReader);
+                var req = await ObexPacket.ReadFromStream<ObexConnectPacket>(_serverReader);
                 Assert.True(req.Opcode.IsFinalBitSet);
                 Assert.Equal(ObexOperation.Connect, req.Opcode.ObexOperation);
 
@@ -64,9 +64,9 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
         [Fact]
         public async Task TestRunObexRequest_GetSingleResponseBody()
         {
-            Task fakeServerTask = Task.Run(async () =>
+            var fakeServerTask = Task.Run(async () =>
             {
-                ObexPacket req = await ObexPacket.ReadFromStream(_serverReader);
+                var req = await ObexPacket.ReadFromStream(_serverReader);
                 Assert.True(req.Opcode.IsFinalBitSet);
                 Assert.Equal(ObexOperation.Get, req.Opcode.ObexOperation);
                 _output.WriteLine("Fake server: request received.");
@@ -75,7 +75,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
                     new ObexOpcode(ObexOperation.Success, true),
                     new ObexHeader(HeaderId.EndOfBody, "Hello world!", true, Encoding.UTF8)
                     );
-                IBuffer buf = response.ToBuffer();
+                var buf = response.ToBuffer();
                 _output.WriteLine("Response packet:");
                 _output.WriteLine(BitConverter.ToString(buf.ToArray()));
                 _serverWriter.WriteBuffer(buf);
@@ -88,7 +88,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
             var buf = request.ToBuffer().ToArray();
             _output.WriteLine(BitConverter.ToString(buf));
 
-            ObexPacket response = await _client.RunObexRequestAsync(request);
+            var response = await _client.RunObexRequestAsync(request);
             Assert.True(response.Opcode.IsFinalBitSet);
             Assert.Equal(ObexOperation.Success, response.Opcode.ObexOperation);
             Assert.Equal("Hello world!", response.GetBodyContentAsUtf8String(true));
@@ -102,12 +102,12 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
             _clientInputStream.Timeout = int.MaxValue;
             _clientOutputStream.Timeout = int.MaxValue;
 
-            int i = 1;
-            Task fakeServerTask = Task.Run(async () =>
+            var i = 1;
+            var fakeServerTask = Task.Run(async () =>
             {
                 for (; i < 30; i++)
                 {
-                    ObexPacket req = await ObexPacket.ReadFromStream(_serverReader);
+                    var req = await ObexPacket.ReadFromStream(_serverReader);
                     Assert.True(req.Opcode.IsFinalBitSet);
                     Assert.Equal(ObexOperation.Get, req.Opcode.ObexOperation);
 
@@ -119,7 +119,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
                     await _serverWriter.StoreAsync();
                 }
 
-                ObexPacket reqFinal = await ObexPacket.ReadFromStream(_serverReader);
+                var reqFinal = await ObexPacket.ReadFromStream(_serverReader);
                 Assert.True(reqFinal.Opcode.IsFinalBitSet);
                 Assert.Equal(ObexOperation.Get, reqFinal.Opcode.ObexOperation);
 
@@ -132,12 +132,12 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
             });
 
             ObexPacket request = new(new ObexOpcode(ObexOperation.Get, true));
-            ObexPacket response = await _client.RunObexRequestAsync(request);
+            var response = await _client.RunObexRequestAsync(request);
             Assert.True(response.Opcode.IsFinalBitSet);
             Assert.Equal(ObexOperation.Success, response.Opcode.ObexOperation);
 
             StringBuilder sb = new();
-            for (int j = 1; j <= 30; j++)
+            for (var j = 1; j <= 30; j++)
             {
                 sb.Append(j);
             }

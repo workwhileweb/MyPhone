@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GoodTimeStudio.MyPhone.OBEX
 {
     public class ObexOpcode
     {
         public byte Value { get; }
-        public bool IsFinalBitSet { get => Value >> 7 == 1; }
-        public bool IsInUserDefinedRange { get => 0x10 < Value && Value <= 0x1F; }
+        public bool IsFinalBitSet => Value >> 7 == 1;
+        public bool IsInUserDefinedRange => 0x10 < Value && Value <= 0x1F;
 
         /// <summary>
         /// Return a <see cref="OBEX.ObexOperation"/> if this opcode represents a OBEX operation. Otherwise, return null.
@@ -17,7 +15,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
         {
             get
             {
-                byte opcode = Value;
+                var opcode = Value;
                 if (!Enum.IsDefined(typeof(ObexOperation), opcode))
                 {
                     opcode = (byte)(opcode & 0x7F); // 0111 1111

@@ -1,5 +1,4 @@
 ﻿using GoodTimeStudio.MyPhone.Helpers;
-using Windows.ApplicationModel.Calls;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
 
@@ -17,12 +16,12 @@ namespace GoodTimeStudio.MyPhone.DeviceTest
         [Fact]
         public async Task TestGetPhoneLineTransportFromBluetoothDevice()
         {
-            using (BluetoothDevice device = await BluetoothDevice.FromIdAsync(_bthFixture.BluetoothDeviceId))
+            using (var device = await BluetoothDevice.FromIdAsync(_bthFixture.BluetoothDeviceId))
             {
-                PhoneLineTransportDevice? phoneLine = await PhoneLineTransportHelper.GetPhoneLineTransportFromBluetoothDevice(device);
+                var phoneLine = await PhoneLineTransportHelper.GetPhoneLineTransportFromBluetoothDevice(device);
                 Assert.NotNull(phoneLine);
 
-                DeviceInformation phoneLineDevInfo = await DeviceInformation.CreateFromIdAsync(phoneLine!.DeviceId);
+                var phoneLineDevInfo = await DeviceInformation.CreateFromIdAsync(phoneLine!.DeviceId);
                 Assert.Equal(device.Name, phoneLineDevInfo.Name);
                 Console.WriteLine($"Corresponding PhoneLineTransportDevice: {phoneLineDevInfo.Id}");
             }

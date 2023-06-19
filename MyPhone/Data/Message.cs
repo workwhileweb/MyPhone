@@ -1,13 +1,7 @@
 ﻿using GoodTimeStudio.MyPhone.Extensions;
 using GoodTimeStudio.MyPhone.OBEX;
-using MixERP.Net.VCards;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodTimeStudio.MyPhone.Data
 {

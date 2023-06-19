@@ -54,7 +54,7 @@ namespace GoodTimeStudio.MyPhone.Models
 
         private async void UpdateTransportDeviceName()
         {
-            DeviceInformation information = await DeviceInformation.CreateFromIdAsync(TransportDeviceId);
+            var information = await DeviceInformation.CreateFromIdAsync(TransportDeviceId);
             TransportDeviceName = information.Name;
             OnPropertyChanged(nameof(TransportDeviceName));
         }

@@ -56,11 +56,11 @@ namespace GoodTimeStudio.MyPhone.Controls
 
         private static void OnBindableSelectionStartChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            SelectionBindingTextBox textBox = (SelectionBindingTextBox)dependencyObject;
+            var textBox = (SelectionBindingTextBox)dependencyObject;
 
             if (!textBox.selectionStartChangeFromUI)
             {
-                int newValue = (int)args.NewValue;
+                var newValue = (int)args.NewValue;
                 textBox.SelectionStart = newValue;
             }
             else
@@ -71,11 +71,11 @@ namespace GoodTimeStudio.MyPhone.Controls
 
         private static void OnBindableSelectionLengthChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
         {
-            SelectionBindingTextBox textBox = (SelectionBindingTextBox)dependencyObject;
+            var textBox = (SelectionBindingTextBox)dependencyObject;
 
             if (!textBox.selectionLengthChangeFromUI)
             {
-                int newValue = (int)args.NewValue;
+                var newValue = (int)args.NewValue;
                 textBox.SelectionLength = newValue;
             }
             else

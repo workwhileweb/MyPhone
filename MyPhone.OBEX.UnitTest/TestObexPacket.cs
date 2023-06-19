@@ -28,24 +28,24 @@ namespace GoodTimeStudio.MyPhone.OBEX.UnitTest
         [Fact]
         public async Task TestReadFromStream_SimplePacket()
         {
-            ObexPacket originalPacket = new ObexPacket(new ObexOpcode(ObexOperation.Get, true));
+            var originalPacket = new ObexPacket(new ObexOpcode(ObexOperation.Get, true));
             _writer.WriteBuffer(originalPacket.ToBuffer());
             await _writer.StoreAsync();
 
-            ObexPacket readPacket = await ObexPacket.ReadFromStream(_reader);
+            var readPacket = await ObexPacket.ReadFromStream(_reader);
             Assert.Equal(originalPacket, readPacket);
         }
 
         [Fact]
         public async Task TestReadFromStream_PacketWithHeaders()
         {
-            ObexPacket originalPacket = new ObexPacket(
+            var originalPacket = new ObexPacket(
                 new ObexOpcode(ObexOperation.Get, true), 
                 new ObexHeader(HeaderId.Name, "Foobar", true, Encoding.BigEndianUnicode));
             _writer.WriteBuffer(originalPacket.ToBuffer());
             await _writer.StoreAsync();
 
-            ObexPacket readPacket = await ObexPacket.ReadFromStream(_reader);
+            var readPacket = await ObexPacket.ReadFromStream(_reader);
             Assert.Equal(originalPacket, readPacket);
         }
     }

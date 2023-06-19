@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI;
 using GoodTimeStudio.MyPhone.Device;
 using GoodTimeStudio.MyPhone.Models;
-using GoodTimeStudio.MyPhone.OBEX;
 using GoodTimeStudio.MyPhone.OBEX.Map;
 using GoodTimeStudio.MyPhone.OBEX.Pbap;
 using GoodTimeStudio.MyPhone.Utilities;
@@ -12,12 +10,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Calls;
 using Windows.ApplicationModel.Resources;
-using Windows.Devices.Bluetooth;
-using Windows.Devices.Enumeration;
 
 namespace GoodTimeStudio.MyPhone.Pages
 {
@@ -154,7 +149,7 @@ namespace GoodTimeStudio.MyPhone.Pages
 
             PhoneLineTransportDeviceId = _deviceManager.CallService.TransportDevice.DeviceId;
             IsPhoneLineRegistered = _deviceManager.CallService.TransportDevice.IsRegistered();
-            PhoneLine? pl = await _deviceManager.CallService.GetSelectedPhoneLineAsync();
+            var pl = await _deviceManager.CallService.GetSelectedPhoneLineAsync();
             if (pl != null)
             {
                 _autoSelectedPhoneLineId = pl.Id.ToString();
@@ -191,7 +186,7 @@ namespace GoodTimeStudio.MyPhone.Pages
         {
             _dispatcherQueue.TryEnqueue(async () => 
             {
-                PhoneLine phoneLine = await PhoneLine.FromIdAsync(args.LineId);
+                var phoneLine = await PhoneLine.FromIdAsync(args.LineId);
                 PhoneLines.Add(new ObservablePhoneLine(phoneLine));
             });
         }

@@ -20,7 +20,7 @@ namespace GoodTimeStudio.MyPhone.Services
 
         public T? GetValue<T>(string key)
         {
-            if (SettingsStorage.TryGetValue(key, out object? value))
+            if (SettingsStorage.TryGetValue(key, out var value))
             {
                 return (T)value!;
             }

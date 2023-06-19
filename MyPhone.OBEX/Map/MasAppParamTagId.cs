@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GoodTimeStudio.MyPhone.OBEX.Map
+﻿namespace GoodTimeStudio.MyPhone.OBEX.Map
 {
     public enum MasAppParamTagId : byte
     {

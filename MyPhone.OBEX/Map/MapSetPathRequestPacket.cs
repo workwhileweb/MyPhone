@@ -1,6 +1,5 @@
 ﻿using GoodTimeStudio.MyPhone.OBEX.Headers;
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
@@ -72,10 +71,10 @@ namespace GoodTimeStudio.MyPhone.OBEX.Map
             writer.WriteByte(0); // Reserved Constants field
         }
 
-        protected async override Task<uint> ReadExtraField(DataReader reader)
+        protected override async Task<uint> ReadExtraField(DataReader reader)
         {
             await reader.LoadAsync(2);
-            byte flag = reader.ReadByte();
+            var flag = reader.ReadByte();
             flag = (byte)(flag & 0x03);
             if (flag == 0x10)
             {

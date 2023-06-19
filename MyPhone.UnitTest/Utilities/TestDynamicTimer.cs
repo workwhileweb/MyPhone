@@ -17,8 +17,8 @@ namespace MyPhone.UnitTest.Utilities
                 new DynamicTimerSchedule(new TimeSpan(0, 0, 0, 1, 0), 2),
 
             };
-            DynamicTimer timer = new DynamicTimer(schedules);
-            int count = 0;
+            var timer = new DynamicTimer(schedules);
+            var count = 0;
             timer.Elapsed += (object? sender, DynamicTimerElapsedEventArgs e) =>
             {
                 count++;
@@ -40,8 +40,8 @@ namespace MyPhone.UnitTest.Utilities
             {
                 new DynamicTimerSchedule(TimeSpan.FromSeconds(2), 5),
             };
-            DynamicTimer timer = new DynamicTimer(schedules);
-            int count = 0;
+            var timer = new DynamicTimer(schedules);
+            var count = 0;
             timer.Elapsed += (object? sender, DynamicTimerElapsedEventArgs e) =>
             {
                 count++;
@@ -70,8 +70,8 @@ namespace MyPhone.UnitTest.Utilities
             {
                 new DynamicTimerSchedule(TimeSpan.FromSeconds(0.1), 0),
             };
-            DynamicTimer timer = new DynamicTimer(schedules);
-            int count = 0;
+            var timer = new DynamicTimer(schedules);
+            var count = 0;
 
             timer.Elapsed += (object? sender, DynamicTimerElapsedEventArgs e) =>
             {
@@ -94,9 +94,9 @@ namespace MyPhone.UnitTest.Utilities
                 new DynamicTimerSchedule(TimeSpan.FromSeconds(0.2), 4),
                 new DynamicTimerSchedule(TimeSpan.FromSeconds(0.3), 4),
             };
-            DynamicTimer timer = new DynamicTimer(schedules);
-            int count = 0;
-            DateTime previousTime = DateTime.MinValue;
+            var timer = new DynamicTimer(schedules);
+            var count = 0;
+            var previousTime = DateTime.MinValue;
 
             timer.Elapsed += (object? sender, DynamicTimerElapsedEventArgs e) =>
             {
@@ -107,7 +107,7 @@ namespace MyPhone.UnitTest.Utilities
                     return;
                 }
 
-                TimeSpan interval = e.SignalTime - previousTime;
+                var interval = e.SignalTime - previousTime;
                 _output.WriteLine($"Interval: {interval}");
                 if (count <= 4)
                 {

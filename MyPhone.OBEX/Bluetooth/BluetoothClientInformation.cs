@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Windows.Networking;
 
 namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
@@ -27,7 +25,7 @@ namespace GoodTimeStudio.MyPhone.OBEX.Bluetooth
 
         public override int GetHashCode()
         {
-            int hashCode = 735311851;
+            var hashCode = 735311851;
             hashCode = hashCode * -1521134295 + EqualityComparer<HostName>.Default.GetHashCode(HostName);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(ServiceName);
             return hashCode;

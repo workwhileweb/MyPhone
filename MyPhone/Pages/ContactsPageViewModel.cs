@@ -1,13 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using GoodTimeStudio.MyPhone.Data;
 using GoodTimeStudio.MyPhone.Device.Services;
 using GoodTimeStudio.MyPhone.Models;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GoodTimeStudio.MyPhone.Pages

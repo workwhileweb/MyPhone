@@ -32,7 +32,7 @@ namespace GoodTimeStudio.MyPhone.Controls
 
             // TODO: use IDeviceService
 
-            string bluttoothSelector = "System.Devices.Aep.ProtocolId:=\"{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}\" AND (System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True OR System.Devices.Aep.IsPaired:=System.StructuredQueryType.Boolean#True)";
+            var bluttoothSelector = "System.Devices.Aep.ProtocolId:=\"{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}\" AND (System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True OR System.Devices.Aep.IsPaired:=System.StructuredQueryType.Boolean#True)";
             _DeviceWatcher = DeviceInformation.CreateWatcher(bluttoothSelector, null, DeviceInformationKind.AssociationEndpoint);
 
             _DeviceWatcher.Added += _DeviceWatcher_Added;
@@ -50,7 +50,7 @@ namespace GoodTimeStudio.MyPhone.Controls
         {
             _dispatcherQueue.TryEnqueue(DispatcherQueuePriority.Normal, () =>
             {
-                var de = Devices.Where(d => d.Id == args.Id).FirstOrDefault();
+                var de = Devices.FirstOrDefault(d => d.Id == args.Id);
                 if (de != null)
                 {
                     de.Update(args);
@@ -62,7 +62,7 @@ namespace GoodTimeStudio.MyPhone.Controls
         {
             _dispatcherQueue.TryEnqueue(DispatcherQueuePriority.Normal, () =>
             {
-                var de = Devices.Where(d => d.Id == args.Id).FirstOrDefault();
+                var de = Devices.FirstOrDefault(d => d.Id == args.Id);
                 if (de != null)
                 {
                     Devices.Remove(de);

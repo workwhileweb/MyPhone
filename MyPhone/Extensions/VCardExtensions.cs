@@ -1,10 +1,5 @@
 ﻿using GoodTimeStudio.MyPhone.Data;
 using MixERP.Net.VCards;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodTimeStudio.MyPhone.Extensions
 {

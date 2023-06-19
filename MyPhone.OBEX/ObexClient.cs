@@ -1,5 +1,4 @@
-﻿using GoodTimeStudio.MyPhone.OBEX.Headers;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
@@ -33,7 +32,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
                 throw new InvalidOperationException("ObexClient is already connected to a ObexServer");
             }
 
-            ObexConnectPacket packet = new ObexConnectPacket(targetService);
+            var packet = new ObexConnectPacket(targetService);
             var buf = packet.ToBuffer();
 
             Console.WriteLine("Sending OBEX Connection request to server:");
@@ -44,7 +43,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
             await _writer.StoreAsync();
 
             Console.WriteLine("Waiting reply packet...");
-            ObexConnectPacket response = await ObexPacket.ReadFromStream<ObexConnectPacket>(_reader);
+            var response = await ObexPacket.ReadFromStream<ObexConnectPacket>(_reader);
 
             var bytes = response.ToBuffer().ToArray();
             Console.WriteLine("Reply packet:");
@@ -86,16 +85,16 @@ namespace GoodTimeStudio.MyPhone.OBEX
                 throw new InvalidOperationException("ObexClient is not connected to any ObexServer");
             }
 
-            ObexOperation? requestOperation = req.Opcode.ObexOperation;
+            var requestOperation = req.Opcode.ObexOperation;
             if (requestOperation == null)
             {
                 throw new InvalidOperationException("User-defined opcode is not supported");
             }
 
             ObexPacket? response = null;
-            int c = 0;
+            var c = 0;
 
-            using (MemoryStream bodyMemoryStream = new MemoryStream())
+            using (var bodyMemoryStream = new MemoryStream())
             {
                 do
                 {
@@ -117,7 +116,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
                     switch (subResponse.Opcode.ObexOperation)
                     {
                         case ObexOperation.Success:
-                            if (subResponse.Headers.TryGetValue(HeaderId.EndOfBody, out ObexHeader? endOfBodyHeader))
+                            if (subResponse.Headers.TryGetValue(HeaderId.EndOfBody, out var endOfBodyHeader))
                             {
                                 bodyMemoryStream.Write(endOfBodyHeader.Buffer);
                             }
@@ -125,7 +124,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
                             response.BodyBuffer = bodyMemoryStream.ToArray();
                             return response;
                         case ObexOperation.Continue:
-                            if (subResponse.Headers.TryGetValue(HeaderId.Body, out ObexHeader? bodyHeader))
+                            if (subResponse.Headers.TryGetValue(HeaderId.Body, out var bodyHeader))
                             {
                                 bodyMemoryStream.Write(bodyHeader.Buffer);
                             }

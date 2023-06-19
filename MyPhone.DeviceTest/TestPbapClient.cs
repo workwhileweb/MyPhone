@@ -1,13 +1,5 @@
 ﻿using GoodTimeStudio.MyPhone.OBEX.Bluetooth;
-using GoodTimeStudio.MyPhone.OBEX.Map;
 using GoodTimeStudio.MyPhone.OBEX.Pbap;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Devices.Bluetooth;
 
 namespace GoodTimeStudio.MyPhone.DeviceTest
 {

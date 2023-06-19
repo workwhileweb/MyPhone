@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GoodTimeStudio.MyPhone.Utilities
 {
@@ -10,9 +7,9 @@ namespace GoodTimeStudio.MyPhone.Utilities
     {
         public static string ContentToString<T>(this List<T> list)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("[ ");
-            foreach (T item in list)
+            foreach (var item in list)
             {
                 sb.Append(item);
                 sb.Append(", ");

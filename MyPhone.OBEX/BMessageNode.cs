@@ -28,20 +28,20 @@ namespace GoodTimeStudio.MyPhone.OBEX
 
         public static BMessageNode Parse(string bMessageString)
         {
-            StringReader reader = new StringReader(bMessageString);
-            string line = reader.ReadLine().Trim();
+            var reader = new StringReader(bMessageString);
+            var line = reader.ReadLine().Trim();
             if (!line.StartsWith("BEGIN:"))
             {
                 throw new BMessageException(1, "bMessage string should starts with BEGIN");
             }
 
-            BMessageNode root = new BMessageNode(line.Substring(6));
+            var root = new BMessageNode(line.Substring(6));
             return _parseRecursive(ref reader, root, 1);
         }
 
         private static BMessageNode _parseRecursive(ref StringReader reader, BMessageNode root, int lineNum, bool ignoreAttr = false)
         {
-            string line = reader.ReadLine().Trim();
+            var line = reader.ReadLine().Trim();
 
             while (true)
             {

@@ -40,7 +40,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
 
         protected override async Task<uint> ReadExtraField(DataReader reader)
         {
-            uint loaded = await reader.LoadAsync(_EXTRA_FIELD_BITS);
+            var loaded = await reader.LoadAsync(_EXTRA_FIELD_BITS);
             if (loaded != _EXTRA_FIELD_BITS)
             {
                 throw new ObexException("The underlying socket was closed before we were able to read the whole data.");

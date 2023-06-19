@@ -3,12 +3,9 @@ using GoodTimeStudio.MyPhone.Device.Services;
 using GoodTimeStudio.MyPhone.OBEX.Bluetooth;
 using GoodTimeStudio.MyPhone.OBEX.Pbap;
 using Microsoft.Extensions.Logging;
-using MixERP.Net.VCards;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 
@@ -25,9 +22,9 @@ namespace GoodTimeStudio.MyPhone.Device
 
         private BluetoothPbapClientSession? _pbapClientSession;
 
-        public Version? ProfileVersion { get => _pbapClientSession?.ProfileVersion; }
-        public PbapSupportedFeatures? PbapSupportedFeatures { get => _pbapClientSession?.SupportedFeatures; }
-        public DateTime? LastSyncTime { get => _deviceConfiguration.PhonebookServiceSyncedTime; }
+        public Version? ProfileVersion => _pbapClientSession?.ProfileVersion;
+        public PbapSupportedFeatures? PbapSupportedFeatures => _pbapClientSession?.SupportedFeatures;
+        public DateTime? LastSyncTime => _deviceConfiguration.PhonebookServiceSyncedTime;
 
         public DevicePhonebookServiceProvider(
             BluetoothDevice bluetoothDevice, 
@@ -41,7 +38,7 @@ namespace GoodTimeStudio.MyPhone.Device
             _logger = logger;
         }
 
-        protected async override Task<bool> ConnectToServiceAsync()
+        protected override async Task<bool> ConnectToServiceAsync()
         {
             try
             {
@@ -85,8 +82,8 @@ namespace GoodTimeStudio.MyPhone.Device
             var contactVCards = await _pbapClientSession.ObexClient.GetAllContactsAsync();
             await _contactStore.ClearStoreAsync();
 
-            List<Contact> contacts = new List<Contact>();
-            foreach (VCard card in contactVCards)
+            List<Contact> contacts = new();
+            foreach (var card in contactVCards)
             {
                 contacts.Add(new Contact
                 {
@@ -101,7 +98,7 @@ namespace GoodTimeStudio.MyPhone.Device
                 });
             }
             await _contactStore.AddRangeAsync(contacts);
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             _deviceConfiguration.PhonebookServiceSyncedTime = now;
             _logger.LogInformation("Synced {ContactsCount} contacts at {Time}", contacts.Count, now);
         }

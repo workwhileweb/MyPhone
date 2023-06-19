@@ -19,7 +19,7 @@
         [InlineData(0x90, ObexOperation.Continue, true)]
         public void TestConstructor_RawOpcode(byte rawOpcode, ObexOperation operation, bool finalBit)
         {
-            ObexOpcode opcode = new ObexOpcode(rawOpcode);
+            var opcode = new ObexOpcode(rawOpcode);
             Assert.Equal(operation, opcode.ObexOperation);
             Assert.Equal(finalBit, opcode.IsFinalBitSet);
         }

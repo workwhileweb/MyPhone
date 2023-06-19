@@ -1,9 +1,10 @@
-﻿using MyPhone.OBEX;
-using MyPhone.OBEX.Pbap;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Enumeration;
+using GoodTimeStudio.MyPhone.OBEX;
+using GoodTimeStudio.MyPhone.OBEX.Bluetooth;
+using GoodTimeStudio.MyPhone.OBEX.Pbap;
 
 namespace GoodTimeStudio.MyPhone.Demo
 {
@@ -40,7 +41,7 @@ namespace GoodTimeStudio.MyPhone.Demo
             DrawLine();
             try
             {
-                await PbapClientSession.ObexClient.PullPhoneBook("telecom/cch.vcf");
+                await PbapClientSession.ObexClient.PullPhoneBookAsync("telecom/cch.vcf");
             }
             catch (ObexException ex)
             {

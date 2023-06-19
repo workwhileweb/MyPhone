@@ -1,9 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI;
 using GoodTimeStudio.MyPhone.Device;
 using GoodTimeStudio.MyPhone.Models;
-using GoodTimeStudio.MyPhone.Services;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
@@ -30,19 +28,13 @@ namespace GoodTimeStudio.MyPhone.RootPages
         [NotifyPropertyChangedFor(nameof(EnableConnectButton))]
         private bool connecting;
 
-        public bool EnableConnectButton
-        {
-            get => !connecting && selectedDevice != null;
-        }
+        public bool EnableConnectButton => !connecting && selectedDevice != null;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(ErrorTextVisbility))]
         private string? errorText;
 
-        public bool ErrorTextVisbility
-        {
-            get => errorText != null;
-        }
+        public bool ErrorTextVisbility => errorText != null;
 
         public IAsyncRelayCommand DeviceConnectCommand { get; }
 
@@ -54,7 +46,7 @@ namespace GoodTimeStudio.MyPhone.RootPages
 
             Connecting = true;
             ErrorText = null;
-            ResourceLoader resourceLoader = ResourceLoader.GetForViewIndependentUse("Resources");
+            var resourceLoader = ResourceLoader.GetForViewIndependentUse("Resources");
             try
             {
                 await App.Current.SetupDevice(selectedDevice.DeviceInformation, true);

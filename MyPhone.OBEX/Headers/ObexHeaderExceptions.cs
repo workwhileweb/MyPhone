@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GoodTimeStudio.MyPhone.OBEX.Headers
+﻿namespace GoodTimeStudio.MyPhone.OBEX.Headers
 {
     /// <summary>
     /// Throws when the desired <see cref="ObexHeader"/> can not be found in <see cref="ObexPacket"/>.

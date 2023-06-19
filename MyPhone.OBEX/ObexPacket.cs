@@ -35,7 +35,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
 
         public ObexPacket(ObexOpcode op, params ObexHeader[] headers) : this(op)
         {
-            foreach (ObexHeader h in headers)
+            foreach (var h in headers)
             {
                 Headers[h.HeaderId] = h;
             }
@@ -43,14 +43,12 @@ namespace GoodTimeStudio.MyPhone.OBEX
 
         public ObexHeader GetHeader(HeaderId headerId)
         {
-            if (Headers.TryGetValue(headerId, out ObexHeader? header))
+            if (Headers.TryGetValue(headerId, out var header))
             {
                 return header;
             }
-            else
-            {
-                throw new ObexHeaderNotFoundException(headerId);
-            }
+
+            throw new ObexHeaderNotFoundException(headerId);
         }
 
         public T GetBodyContent<T>(IBufferContentInterpreter<T> interpreter)
@@ -82,17 +80,17 @@ namespace GoodTimeStudio.MyPhone.OBEX
 
         public IBuffer ToBuffer()
         {
-            using (DataWriter writer = new DataWriter())
-            using (DataWriter exFieldAndHeaderWriter = new DataWriter())
+            using (var writer = new DataWriter())
+            using (var exFieldAndHeaderWriter = new DataWriter())
             {
                 WriteExtraField(exFieldAndHeaderWriter);
 
-                foreach (ObexHeader header in Headers.Values)
+                foreach (var header in Headers.Values)
                 {
                     header.WriteToStream(exFieldAndHeaderWriter);
                 }
 
-                IBuffer exFieldAndHeaderBuffer = exFieldAndHeaderWriter.DetachBuffer();
+                var exFieldAndHeaderBuffer = exFieldAndHeaderWriter.DetachBuffer();
 
                 writer.WriteByte(Opcode.Value);
                 PacketLength = (ushort)(exFieldAndHeaderBuffer.Length + sizeof(ObexOperation) + sizeof(ushort));
@@ -111,10 +109,10 @@ namespace GoodTimeStudio.MyPhone.OBEX
                 return;
             }
 
-            uint sizeToRead = headerSize;
+            var sizeToRead = headerSize;
             while (sizeToRead > 0)
             {
-                uint loaded = await reader.LoadAsync(headerSize);
+                var loaded = await reader.LoadAsync(headerSize);
                 if (loaded == 0)
                 {
                     throw new ObexException("The underlying socket was closed before we were able to read the whole data.");
@@ -124,7 +122,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
 
             while (reader.UnconsumedBufferLength > 0)
             {
-                ObexHeader header = ObexHeader.ReadFromStream(reader);
+                var header = ObexHeader.ReadFromStream(reader);
                 Headers[header.HeaderId] = header;
             }
         }
@@ -140,16 +138,16 @@ namespace GoodTimeStudio.MyPhone.OBEX
         /// <param name="reader"></param>
         /// <param name="packet">Optional, if this parameter is not null, the data will be read into this parameter</param>
         /// <returns>Loaded OBEX packet</returns>
-        public async static Task<T> ReadFromStream<T>(DataReader reader) where T : ObexPacket, new()
+        public static async Task<T> ReadFromStream<T>(DataReader reader) where T : ObexPacket, new()
         {
-            uint loaded = await reader.LoadAsync(1);
+            var loaded = await reader.LoadAsync(1);
             if (loaded != 1)
             {
                 throw new ObexException("The underlying socket was closed before we were able to read the whole data.");
             }
 
             ObexOpcode opcode = new (reader.ReadByte());
-            T packet = new T();
+            var packet = new T();
             packet.Opcode = opcode;
 
             Console.WriteLine($"ReadFromStream:: Opcode: {packet.Opcode}");
@@ -163,8 +161,8 @@ namespace GoodTimeStudio.MyPhone.OBEX
             packet.PacketLength = reader.ReadUInt16();
             Console.WriteLine($"packet length: {packet.PacketLength}");
 
-            uint extraFieldBits = await packet.ReadExtraField(reader);
-            uint size = packet.PacketLength - (uint)sizeof(ObexOperation) - sizeof(ushort) - extraFieldBits;
+            var extraFieldBits = await packet.ReadExtraField(reader);
+            var size = packet.PacketLength - (uint)sizeof(ObexOperation) - sizeof(ushort) - extraFieldBits;
             await packet.ParseHeader(reader, size);
             return packet;
         }
@@ -179,7 +177,7 @@ namespace GoodTimeStudio.MyPhone.OBEX
 
         public override int GetHashCode()
         {
-            int hashCode = 467068145;
+            var hashCode = 467068145;
             hashCode = hashCode * -1521134295 + EqualityComparer<ObexOpcode>.Default.GetHashCode(Opcode);
             hashCode = hashCode * -1521134295 + PacketLength.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<Dictionary<HeaderId, ObexHeader>>.Default.GetHashCode(Headers);

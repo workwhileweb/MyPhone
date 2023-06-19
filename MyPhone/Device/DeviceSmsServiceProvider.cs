@@ -1,17 +1,11 @@
-﻿using CommunityToolkit.Mvvm.DependencyInjection;
-using GoodTimeStudio.MyPhone.Device;
-using GoodTimeStudio.MyPhone.Device.Services;
+﻿using GoodTimeStudio.MyPhone.Device.Services;
 using GoodTimeStudio.MyPhone.OBEX;
 using GoodTimeStudio.MyPhone.OBEX.Bluetooth;
 using GoodTimeStudio.MyPhone.OBEX.Map;
 using GoodTimeStudio.MyPhone.Services;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 
@@ -24,8 +18,8 @@ namespace GoodTimeStudio.MyPhone
     {
         public MasClient? MasClient => _masClientSession?.ObexClient;
 
-        public Version? ProfileVersion { get => _masClientSession?.ProfileVersion; }
-        public MapSupportedFeatures? MapSupportedFeatures { get => _masClientSession?.SupportedFeatures; }
+        public Version? ProfileVersion => _masClientSession?.ProfileVersion;
+        public MapSupportedFeatures? MapSupportedFeatures => _masClientSession?.SupportedFeatures;
 
         private readonly BluetoothDevice _device;
         private readonly ILogger<DeviceSmsServiceProvider> _logger;
@@ -110,7 +104,7 @@ namespace GoodTimeStudio.MyPhone
             _logger.LogInformation(AppLogEvents.SmsServiceMessageReceived, "MnsServer received new message, handle: {MessageHandle}.", e.MessageHandle);
             Debug.Assert(_masClientSession != null);
             Debug.Assert(_masClientSession.ObexClient != null);
-            BMessage message = await _masClientSession.ObexClient.GetMessageAsync(e.MessageHandle);
+            var message = await _masClientSession.ObexClient.GetMessageAsync(e.MessageHandle);
             _notificationService.ShowMessageNotification(message);
             _logger.LogTrace(AppLogEvents.SmsServiceMessageReceived, "Message {MessageHandle} body:\n{Body}", e.MessageHandle, message.Body);
         }

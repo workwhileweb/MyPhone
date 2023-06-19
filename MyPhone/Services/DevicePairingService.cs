@@ -31,7 +31,7 @@ namespace GoodTimeStudio.MyPhone.Services
             }
 
             deviceInformation.Pairing.Custom.PairingRequested += Custom_PairingRequested;
-            DevicePairingResult pairingResult = await deviceInformation.Pairing.Custom.PairAsync(DevicePairingKinds.ConfirmPinMatch);
+            var pairingResult = await deviceInformation.Pairing.Custom.PairAsync(DevicePairingKinds.ConfirmPinMatch);
             deviceInformation.Pairing.Custom.PairingRequested -= Custom_PairingRequested;
             _devicePairDialogService.HideDialog();
             return pairingResult;
@@ -40,7 +40,7 @@ namespace GoodTimeStudio.MyPhone.Services
         private async void Custom_PairingRequested(DeviceInformationCustomPairing sender, DevicePairingRequestedEventArgs args)
         {
             var deferral = args.GetDeferral();
-            bool accept = await _devicePairDialogService.ShowPairDialogAsync(args.DeviceInformation.Name, args.Pin, TimeSpan.FromSeconds(30));
+            var accept = await _devicePairDialogService.ShowPairDialogAsync(args.DeviceInformation.Name, args.Pin, TimeSpan.FromSeconds(30));
             if (accept)
             {
                 args.Accept();
@@ -52,7 +52,7 @@ namespace GoodTimeStudio.MyPhone.Services
         {
             // Currently Bluetooth APIs don't provide a selector to get ALL devices that are both paired and non-paired.
             // So we need to do it mannually, this is the Bluetooth selector that include both paired and unpaird devices
-            string bluttoothSelector = "System.Devices.Aep.ProtocolId:=\"{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}\" AND (System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True OR System.Devices.Aep.IsPaired:=System.StructuredQueryType.Boolean#True)";
+            var bluttoothSelector = "System.Devices.Aep.ProtocolId:=\"{E0CBF06C-CD8B-4647-BB8A-263B43F0F974}\" AND (System.Devices.Aep.CanPair:=System.StructuredQueryType.Boolean#True OR System.Devices.Aep.IsPaired:=System.StructuredQueryType.Boolean#True)";
             return DeviceInformation.CreateWatcher(bluttoothSelector, null, DeviceInformationKind.AssociationEndpoint);
         }
     }
